@@ -1,7 +1,7 @@
 {
   "name": "story-book",
   "version": "1.0.0",
-  "description": "A story book application built with nodejs",
+  "description": "A story book application built with node.js",
   "main": "server.js",
   "engines": {
     "node": "8.11.1"
