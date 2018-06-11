@@ -21,7 +21,7 @@ passport.use(new GoogleStrategy({
     clientSecret: keys.googleClientSecret,
     callbackURL: '/auth/callback'
 }, async (accessToken, refreshToken, profile, done) => {
-    const user = await User.findOne({
+    let user = await User.findOne({
         googleID: profile.id
     });
     if (user) {
@@ -31,7 +31,8 @@ passport.use(new GoogleStrategy({
         googleID: profile.id,
         name: profile.displayName,
         email: profile.emails[0].value,
-        photo: profile.photos[0].value
+        photo: profile.photos[0].value.substring(0,profile.photos[0].value.indexOf('?'))
     });
-    await newUser.save();
+    user = await newUser.save();
+    done(null, user);
 }));
