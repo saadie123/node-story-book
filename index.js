@@ -12,6 +12,7 @@ require('./config/passport');
 const keys = require('./config/keys');
 const authRoutes = require('./routes/auth');
 const indexRoutes = require('./routes/index');
+const storiesRoutes = require('./routes/stories');
 const app = express();
 mongoose.Promise = global.Promise;
 mongoose.connect(keys.mongodbURL);
@@ -37,6 +38,11 @@ app.use((req, res, next) => {
 
 app.use('/', indexRoutes);
 app.use('/auth', authRoutes);
+app.use('/stories', storiesRoutes);
+
+app.use('*', (req, res) => {
+    res.redirect('/not-found');
+});
 
 const port = process.env.PORT || 5050;
 app.listen(port, () => {
