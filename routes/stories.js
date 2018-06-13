@@ -3,12 +3,15 @@ const router = express.Router();
 const auth = require('../middlewares/auth');
 const Story = require('../models/Story');
 
-router.get('/', (req, res) => {
-    res.render('stories/index');
+router.get('/', async (req, res) => {
+    const stories = await Story.find({status:'public'}).populate('user');
+    res.render('stories/index',{stories});
 });
 
-router.get('/story/:id',(req, res) => {
-    res.render('stories/story');
+router.get('/story/:id', async(req, res) => {
+    const id = req.params.id;
+    const story = await Story.findById(id).populate('user');
+    res.render('stories/story', {story});
 });
 
 router.get('/add', auth.authenticateUser,(req, res) => {

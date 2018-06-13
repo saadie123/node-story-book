@@ -10,6 +10,7 @@ const mongoose = require('mongoose');
 // Passport config
 require('./config/passport');
 
+const helpers = require('./helpers/hbs');
 const keys = require('./config/keys');
 const authRoutes = require('./routes/auth');
 const indexRoutes = require('./routes/index');
@@ -19,7 +20,15 @@ mongoose.Promise = global.Promise;
 mongoose.connect(keys.mongodbURL);
 
 app.use(express.static(path.join(__dirname,'public')));
-app.engine('.hbs', expresshbs({ defaultLayout: 'main', extname: '.hbs'}));
+app.engine('.hbs', expresshbs({ 
+    defaultLayout: 'main', 
+    extname: '.hbs', 
+    helpers:{
+        truncate:helpers.truncate, 
+        stripTags: helpers.stripTags,
+        formatDate: helpers.formatDate
+    }
+}));
 app.set('view engine', 'hbs');
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({extended:true}));
