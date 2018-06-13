@@ -4,6 +4,7 @@ const expresshbs = require('express-handlebars');
 const session = require('express-session');
 const cookieParser = require('cookie-parser');
 const bodyParser = require('body-parser');
+const methodOverride = require('method-override');
 const passport = require('passport');
 const mongoose = require('mongoose');
 
@@ -26,12 +27,14 @@ app.engine('.hbs', expresshbs({
     helpers:{
         truncate:helpers.truncate, 
         stripTags: helpers.stripTags,
-        formatDate: helpers.formatDate
+        formatDate: helpers.formatDate,
+        select: helpers.select
     }
 }));
 app.set('view engine', 'hbs');
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({extended:true}));
+app.use(methodOverride('_method'));
 app.use(cookieParser());
 app.use(session({
     secret: keys.sessionSecret,

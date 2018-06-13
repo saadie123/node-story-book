@@ -18,8 +18,10 @@ router.get('/add', auth.authenticateUser,(req, res) => {
     res.render('stories/add');
 });
 
-router.get('/edit/:id', auth.authenticateUser,(req, res) => {
-    res.render('stories/edit');
+router.get('/edit/:id', auth.authenticateUser, async (req, res) => {
+    const id = req.params.id;
+    const story = await Story.findById(id);
+    res.render('stories/edit', {story});
 });
 
 router.post('/add', auth.authenticateUser, async (req, res) => {
@@ -51,6 +53,43 @@ router.post('/add', auth.authenticateUser, async (req, res) => {
     });
     const newStory = await story.save();
     res.redirect(`/stories/story/${newStory._id}`);
+});
+
+router.put('/edit/:id', async (req, res) => {
+    const id = req.params.id;
+    let allowComments;
+    if(req.body.allowComments === 'on'){
+        allowComments = true;
+    } else {
+        allowComments = false;
+    }
+    let story = {
+        title: req.body.title,
+        body: req.body.body,
+        allowComments,
+        status: req.body.status
+    }
+    const errors = {
+        title: [],
+        body: []
+    }
+    if(!req.body.title){
+        errors.title.push({message: 'Story title is required!'});
+    }
+    if(!req.body.body){
+        errors.body.push({message:'Story detail / body is required'});
+    }
+    if(errors.title.length > 0 || errors.body.length > 0){
+        return res.render('stories/edit',{errors,story});
+    }
+    await Story.findByIdAndUpdate(id,{$set:story});
+    res.redirect('/dashboard');
+});
+
+router.delete('/story/:id', async (req, res) => {
+    const id = req.params.id;
+    await Story.findByIdAndRemove(id);
+    res.redirect('/dashboard');
 });
 
 module.exports = router;
