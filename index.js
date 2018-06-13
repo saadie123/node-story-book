@@ -3,6 +3,7 @@ const express = require('express');
 const expresshbs = require('express-handlebars');
 const session = require('express-session');
 const cookieParser = require('cookie-parser');
+const bodyParser = require('body-parser');
 const passport = require('passport');
 const mongoose = require('mongoose');
 
@@ -20,6 +21,8 @@ mongoose.connect(keys.mongodbURL);
 app.use(express.static(path.join(__dirname,'public')));
 app.engine('.hbs', expresshbs({ defaultLayout: 'main', extname: '.hbs'}));
 app.set('view engine', 'hbs');
+app.use(bodyParser.json());
+app.use(bodyParser.urlencoded({extended:true}));
 app.use(cookieParser());
 app.use(session({
     secret: keys.sessionSecret,

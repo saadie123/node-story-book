@@ -5,6 +5,11 @@
             <div class="input-field col s12">
                 <input type="text" name="title">
                 <label>Title</label>
+                {{#if errors.title}}
+                    {{#each errors.title}}
+                    <span class="red-text">{{ message }}</span>
+                    {{/each}}
+                {{/if}}
             </div>
         </div>
         <div class="row">
@@ -27,6 +32,11 @@
             <div class="input-field col s12">
                 <h5>Tell us your story</h5>
                 <textarea name="body"></textarea>
+                {{#if errors.body}}
+                    {{#each errors.body}}
+                    <span class="red-text">{{ message }}</span>
+                    {{/each}}
+                {{/if}}
             </div>
         </div>
         <input type="submit" value="Save" class="btn">
