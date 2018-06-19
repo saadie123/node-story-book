@@ -28,7 +28,8 @@ app.engine('.hbs', expresshbs({
         truncate:helpers.truncate, 
         stripTags: helpers.stripTags,
         formatDate: helpers.formatDate,
-        select: helpers.select
+        select: helpers.select,
+        editIcon: helpers.editIcon
     }
 }));
 app.set('view engine', 'hbs');

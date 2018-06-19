@@ -21,6 +21,20 @@ const storySchema = new mongoose.Schema({
         type: Date,
         default: Date.now
     },
+    comments:[{
+        commentBody:{
+            type: String,
+            required: true
+        },
+        commentDate:{
+            type: Date,
+            default: Date.now
+        },
+        commentUser: {
+            type: mongoose.Schema.Types.ObjectId,
+            ref: 'users'
+        }
+    }],
     user: {
         type: mongoose.Schema.Types.ObjectId,
         ref: 'users'
